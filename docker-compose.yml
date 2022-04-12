@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  app:
+    container_name: app
+    build: ./app
+    volumes:
+     - ./app/source:/django
+    ports:
+     - 8000:8000
+    image: app:django
+    command: python manage.py runserver 0.0.0.0:8000
+    depends_on:
+      - db
+  db:
+    image: mysql:5.7
+    container_name: mysql
+    volumes:
+      - ./database/data:/var/lib/mysql
+    ports:
+      - 3333:3306
+    environment:
+      MYSQL_DATABASE: 'django'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
